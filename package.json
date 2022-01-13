@@ -1,0 +1,12 @@
+{
+  "name": "zerossl",
+  "version": "0.0.0",
+  "description": "ZeroSSL REST API wrapper",
+  "keywords": ["zerossl", "ssl", "tls"],
+  "author": "Adam K Dean <adamkdean@googlemail.com>",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
