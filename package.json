@@ -1,6 +1,6 @@
 {
   "name": "zerossl",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "ZeroSSL REST API wrapper",
   "keywords": ["zerossl", "ssl", "tls", "api"],
   "author": "Adam K Dean <adamkdean@googlemail.com>",
