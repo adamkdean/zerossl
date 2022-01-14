@@ -5,9 +5,16 @@ ZeroSSL REST API wrapper
 [![npm version](https://img.shields.io/npm/v/zerossl)](https://www.npmjs.com/package/zerossl) [![npm downloads](https://img.shields.io/npm/dt/zerossl)](https://www.npmjs.com/package/zerossl) [![license](https://img.shields.io/npm/l/zerossl)](LICENSE.md)
 
 - [zerossl](#zerossl)
+  - [Development](#development)
   - [Usage](#usage)
   - [Disclaimer](#disclaimer)
   - [License](#license)
+
+## Development
+
+This project is in development as of January 2022. The project
+is not ready for use yet but should be ready before the end of
+the month. Your patience is appreciated.
 
 ## Usage
 
