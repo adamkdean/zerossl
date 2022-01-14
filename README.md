@@ -27,7 +27,7 @@ This library provides a wrapper for the ZeroSSL REST API.
 ## Disclaimer
 
 This library is a community open source project. There is no connection
-with ZeroSSL or Stack Holdings GmbH. The term ZeroSSL/zerossl is recongised
+with ZeroSSL or Stack Holdings GmbH. The term ZeroSSL/zerossl is recognised
 as ZeroSSL™, a trademark of Stack Holdings GmbH in the USA, EU & UK and
 this library is provided in good faith as a community open source project.
 
