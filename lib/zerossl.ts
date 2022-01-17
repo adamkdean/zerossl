@@ -9,6 +9,7 @@ import {
   CertificateList,
   CertificateRecord,
   CertificateSigningRequestOptions,
+  CertificateSigningRequestValidationResult,
   CreateCertificateOptions,
   KeyPair,
   ListCertificateOptions,
@@ -139,10 +140,18 @@ export class ZeroSSL {
     return result.body.success === 1
   }
 
-  // // Validate Certificate Signing Request
-  // public async validateCSR(csr: string): Promise<void> {
-  //   // TODO: api.zerossl.com/validation/csr
-  // }
+  // Validate Certificate Signing Request
+  public async validateCSR(csr: string): Promise<CertificateSigningRequestValidationResult> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/validation/csr?${qs}`
+
+    const postFn = superagent.post(url)
+      .set('Content-Type', 'application/json')
+      .send({ csr })
+
+    const result = await this.performRequest(postFn)
+    return result.body as CertificateSigningRequestValidationResult
+  }
 
   // Generate Key Pair
   public generateKeyPair(bits = 2048): KeyPair {

@@ -48,6 +48,11 @@ export type CertificateSigningRequestOptions = {
   commonName: string
 }
 
+export type CertificateSigningRequestValidationResult = {
+  valid: boolean
+  error?: ZeroSSLError
+}
+
 export type CreateCertificateOptions = {
   csr: string
   domains: string[]

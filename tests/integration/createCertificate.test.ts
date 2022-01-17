@@ -7,7 +7,7 @@ import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
-describe.only('Create Certificate', function () {
+describe('Create Certificate', function () {
   dotenv.config()
   this.timeout(30000)
 
