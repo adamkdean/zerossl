@@ -7,19 +7,15 @@ import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
-describe('Create Certificate', () => {
-  let zerossl: ZeroSSL
+describe('Create Certificate', function () {
+  dotenv.config()
+  this.timeout(30000)
 
-  before(function () {
-    dotenv.config()
-    this.timeout(30000)
-
-    // Initialize ZeroSSL
-    const accessKey = process.env.ZEROSSL_API_KEY || ''
-    zerossl = new ZeroSSL({ accessKey })
-    expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
-    expect(zerossl.options.accessKey).to.equal(accessKey)
-  })
+  // Initialize ZeroSSL
+  const accessKey = process.env.ZEROSSL_API_KEY || ''
+  const zerossl = new ZeroSSL({ accessKey })
+  expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
+  expect(zerossl.options.accessKey).to.equal(accessKey)
 
   it('should create a certificate', async () => {
     // Generate a keypair
@@ -55,5 +51,9 @@ describe('Create Certificate', () => {
     console.log('\nkey:\n', keyPair.privateKey)
     console.log('\ncsr:\n', csr)
     console.log('\ncertificate:\n', certificate)
+
+    // Cancel the certificate
+    const success = await zerossl.cancelCertificate(certificate.id)
+    expect(success).to.equal(true)
   })
 })

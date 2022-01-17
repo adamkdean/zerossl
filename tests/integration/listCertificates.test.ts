@@ -7,19 +7,15 @@ import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
-describe('List Certificates', () => {
-  let zerossl: ZeroSSL
+describe('List Certificates', function () {
+  dotenv.config()
+  this.timeout(30000)
 
-  before(function () {
-    dotenv.config()
-    this.timeout(30000)
-
-    // Initialize ZeroSSL
-    const accessKey = process.env.ZEROSSL_API_KEY || ''
-    zerossl = new ZeroSSL({ accessKey })
-    expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
-    expect(zerossl.options.accessKey).to.equal(accessKey)
-  })
+  // Initialize ZeroSSL
+  const accessKey = process.env.ZEROSSL_API_KEY || ''
+  const zerossl = new ZeroSSL({ accessKey })
+  expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
+  expect(zerossl.options.accessKey).to.equal(accessKey)
 
   it('should get all certificate', async () => {
     const certificates = await zerossl.listCertificates()
@@ -35,6 +31,8 @@ describe('List Certificates', () => {
       expect(certificate.id).to.be.a('string')
       console.log(certificate.id, certificate.status, certificate.common_name)
     })
+
+    console.log(`page ${certificates.page} of ${certificates.total_count}`)
   })
 
   it('should get cancelled certificates only', async () => {
@@ -49,8 +47,10 @@ describe('List Certificates', () => {
     certificates.results.forEach(certificate => {
       expect(certificate).to.be.a('object')
       expect(certificate.id).to.be.a('string')
-      expect(certificate.status).to.equal('draft')
+      expect(certificate.status).to.equal('cancelled')
       console.log(certificate.id, certificate.status, certificate.common_name)
     })
+
+    console.log(`page ${certificates.page} of ${certificates.total_count}`)
   })
 })
