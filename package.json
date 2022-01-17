@@ -2,7 +2,12 @@
   "name": "zerossl",
   "version": "0.0.1",
   "description": "ZeroSSL REST API wrapper",
-  "keywords": ["zerossl", "ssl", "tls", "api"],
+  "keywords": [
+    "zerossl",
+    "ssl",
+    "tls",
+    "api"
+  ],
   "author": "Adam K Dean <adamkdean@googlemail.com>",
   "license": "MIT",
   "repository": {
@@ -14,22 +19,27 @@
     "build": "tsc",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
-    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/**/*.ts'"
+    "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/unit/*.ts'",
+    "test:integration": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/integration/*.ts'"
   },
   "devDependencies": {
     "@edge/eslint-config-typescript": "^0.1.1",
     "@types/chai": "^4.2.22",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.11.10",
+    "@types/node-forge": "^1.0.0",
+    "@types/superagent": "^4.1.14",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "chai": "^4.3.4",
+    "dotenv": "^14.1.0",
     "eslint": "^7.32.0",
     "mocha": "^9.1.3",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.3"
   },
   "dependencies": {
+    "node-forge": "^1.2.1",
     "superagent": "^7.0.2"
   }
 }
