@@ -5,6 +5,14 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export type CertificateList = {
+  total_count: number
+  result_count: number
+  page: number
+  limit: number
+  results: CertificateRecord[]
+}
+
 export type CertificateRecord = {
   id: string
   type: string
@@ -30,11 +38,6 @@ export type CertificateRecord = {
   }
 }
 
-export type KeyPair = {
-  publicKey: string
-  privateKey: string
-}
-
 export type CertificateSigningRequestOptions = {
   country: string
   state: string
@@ -50,6 +53,18 @@ export type CreateCertificateOptions = {
   domains: string[]
   validityDays: 90 | 365
   strictDomains: boolean
+}
+
+export type KeyPair = {
+  publicKey: string
+  privateKey: string
+}
+
+export type ListCertificateOptions = {
+  page?: number
+  limit?: number
+  search?: string
+  certificate_status: 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire'
 }
 
 export type ZeroSSLOptions = {

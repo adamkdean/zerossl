@@ -6,10 +6,12 @@
 import { ZeroSSLErrorMap } from './errors'
 import forge from 'node-forge'
 import {
+  CertificateList,
   CertificateRecord,
   CertificateSigningRequestOptions,
   CreateCertificateOptions,
   KeyPair,
+  ListCertificateOptions,
   ZeroSSLOptions
 } from './types'
 import superagent, { SuperAgentRequest } from 'superagent'
@@ -25,7 +27,7 @@ export class ZeroSSL {
     this.options = { ...defaultOptions, ...options }
   }
 
-  private queryString(params: { [key: string]: string }): string {
+  private queryString(params: { [key: string]: string | number }): string {
     return Object.keys(params).map(key => `${key}=${params[key]}`).join('&')
   }
 
@@ -68,15 +70,33 @@ export class ZeroSSL {
   //   //       api.zerossl.com/certificates/{id}/download/return
   // }
 
-  // // Get Certificate
-  // public async getCertificate(id: string): Promise<Certificate> {
-  //   // TODO: api.zerossl.com/certificates/{id}
-  // }
+  // Get Certificate
+  public async getCertificate(id: string): Promise<CertificateRecord> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}?${qs}`
+    const getFn = superagent.get(url)
+    const result = await this.performRequest(getFn)
 
-  // // List Certificates
-  // public async listCertificates(): Promise<Certificate[]> {
-  //   // TODO: api.zerossl.com/certificates
-  // }
+    return result.body as CertificateRecord
+  }
+
+  // List Certificates
+  public async listCertificates(options?: ListCertificateOptions): Promise<CertificateList> {
+    const query: Record<string, string | number> = { access_key: this.options.accessKey }
+    if (options) {
+      if (options.page) query['page'] = options.page
+      if (options.limit) query['limit'] = options.limit
+      if (options.search) query['search'] = options.search
+      if (options.certificate_status) query['certificate_status'] = options.certificate_status
+    }
+
+    const qs = this.queryString(query)
+    const url = `${this.options.apiUrl}/certificates?${qs}`
+    const getFn = superagent.get(url)
+    const result = await this.performRequest(getFn)
+
+    return result.body as CertificateList
+  }
 
   // // Verification Status
   // public async verificationStatus(id: string): Promise<void> {
