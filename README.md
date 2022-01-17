@@ -1,12 +1,13 @@
 # zerossl
 
-ZeroSSL REST API wrapper
+ZeroSSL REST API wrapper based on the [ZeroSSL REST API documentation](https://zerossl.com/documentation/api/).
 
 [![npm version](https://img.shields.io/npm/v/zerossl)](https://www.npmjs.com/package/zerossl) [![npm downloads](https://img.shields.io/npm/dt/zerossl)](https://www.npmjs.com/package/zerossl) [![license](https://img.shields.io/npm/l/zerossl)](LICENSE.md)
 
 - [zerossl](#zerossl)
   - [Development](#development)
   - [Usage](#usage)
+  - [Tests](#tests)
   - [Disclaimer](#disclaimer)
   - [License](#license)
 
@@ -23,6 +24,15 @@ This library provides a wrapper for the ZeroSSL REST API.
 ```typescript
 // TODO
 ```
+
+## Tests
+
+While I have endeavoured to write tests for this library, I have not
+been able to comprehensively implement them. Most functionality has
+been tested but as the documentation provided by ZeroSSL is quite
+sparse, there may be edge cases that have not been accounted for.
+
+Community contributions are welcome.
 
 ## Disclaimer
 
