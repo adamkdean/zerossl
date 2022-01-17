@@ -5,6 +5,11 @@
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+export type Certificate = {
+  'certificate.crt': string
+  'ca_bundle.crt': string
+}
+
 export type CertificateList = {
   total_count: number
   result_count: number
@@ -82,13 +87,29 @@ export type VerificationStatus = {
   }
 }
 
+export type VerifyDomainOptions = {
+  validation_method: 'EMAIL' | 'CNAME_CSR_HASH' | 'HTTP_CSR_HASH' | 'HTTPS_CSR_HASH'
+  validation_email?: string
+}
+
 export type ZeroSSLOptions = {
   accessKey: string
   apiUrl?: string
 }
 
 export type ZeroSSLError = {
-  code: number
-  type: string
-  message: string
+  code?: number
+  type?: string
+  message?: string
+  details?: {
+    [domain: string]: {
+      [domain: string]: {
+        cname_found: number
+        record_correct: number
+        target_host: string
+        target_record: string
+        actual_record: string
+      }
+    }
+  }
 }

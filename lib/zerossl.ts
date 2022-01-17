@@ -6,6 +6,7 @@
 import { ZeroSSLErrorMap } from './errors'
 import forge from 'node-forge'
 import {
+  Certificate,
   CertificateList,
   CertificateRecord,
   CertificateSigningRequestOptions,
@@ -14,6 +15,7 @@ import {
   KeyPair,
   ListCertificateOptions,
   VerificationStatus,
+  VerifyDomainOptions,
   ZeroSSLOptions
 } from './types'
 import superagent, { SuperAgentRequest } from 'superagent'
@@ -60,17 +62,36 @@ export class ZeroSSL {
     return result.body as CertificateRecord
   }
 
-  // // Verify Domains
-  // public async verifyDomains(): Promise<void> {
-  //   // TODO: api.zerossl.com/certificates/{id}/challenges
-  // }
+  // Verify Domains
+  public async verifyDomains(id: string, options: VerifyDomainOptions): Promise<unknown> {
+    const isEmailValidation = options.validation_method === 'EMAIL'
+    const missingEmail = isEmailValidation && !options.validation_email
+    if (missingEmail) throw new Error('Missing verification option: validation_email')
 
-  // // Download Certificate (ZIP)
-  // // Download Certificate (inline)
-  // public async downloadCertificate(id: string): Promise<void> {
-  //   // TODO: api.zerossl.com/certificates/{id}/download
-  //   //       api.zerossl.com/certificates/{id}/download/return
-  // }
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}/challenges?${qs}`
+
+    let postFn = superagent.post(url)
+      .type('form')
+      .field('validation_method', options.validation_method)
+
+    if (isEmailValidation) postFn = postFn.field('validation_email', options.validation_email)
+
+    const result = await this.performRequest(postFn)
+
+    // TODO: determine data structure of a successful response
+    return result.body
+  }
+
+  // Download Certificate (inline)
+  public async downloadCertificate(id: string): Promise<Certificate> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}/download/return?${qs}`
+    const getFn = superagent.get(url)
+    const result = await this.performRequest(getFn)
+
+    return result.body as Certificate
+  }
 
   // Get Certificate
   public async getCertificate(id: string): Promise<CertificateRecord> {
