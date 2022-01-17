@@ -67,6 +67,16 @@ export type ListCertificateOptions = {
   certificate_status: 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire'
 }
 
+export type VerificationStatus = {
+  validation_completed: number
+  details: {
+    [domain: string]: {
+      method: string
+      status: string
+    }
+  }
+}
+
 export type ZeroSSLOptions = {
   accessKey: string
   apiUrl?: string

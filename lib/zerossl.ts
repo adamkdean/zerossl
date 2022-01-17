@@ -12,6 +12,7 @@ import {
   CreateCertificateOptions,
   KeyPair,
   ListCertificateOptions,
+  VerificationStatus,
   ZeroSSLOptions
 } from './types'
 import superagent, { SuperAgentRequest } from 'superagent'
@@ -98,15 +99,25 @@ export class ZeroSSL {
     return result.body as CertificateList
   }
 
-  // // Verification Status
-  // public async verificationStatus(id: string): Promise<void> {
-  //   // TODO: api.zerossl.com/certificates/{id}/status
-  // }
+  // Verification Status
+  public async verificationStatus(id: string): Promise<VerificationStatus> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}/status?${qs}`
+    const getFn = superagent.get(url)
+    const result = await this.performRequest(getFn)
 
-  // // Resend Verification
-  // public async resendVerification(id: string): Promise<void> {
-  //   // TODO: api.zerossl.com/certificates/{id}/challenges/email
-  // }
+    return result.body as VerificationStatus
+  }
+
+  // Resend Verification
+  public async resendVerification(id: string): Promise<boolean> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}/challenges/email?${qs}`
+    const postFn = superagent.post(url)
+    const result = await this.performRequest(postFn)
+
+    return result.body.success === 1
+  }
 
   // Cancel Certificate
   public async cancelCertificate(id: string): Promise<boolean> {
