@@ -129,10 +129,15 @@ export class ZeroSSL {
     return result.body.success === 1
   }
 
-  // // Delete Certificate
-  // public async deleteCertificate(id: string): Promise<void> {
-  //   // TODO: api.zerossl.com/certificates/{id}
-  // }
+  // Delete Certificate
+  public async deleteCertificate(id: string): Promise<boolean> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}?${qs}`
+    const postFn = superagent.delete(url)
+    const result = await this.performRequest(postFn)
+
+    return result.body.success === 1
+  }
 
   // // Validate Certificate Signing Request
   // public async validateCSR(csr: string): Promise<void> {

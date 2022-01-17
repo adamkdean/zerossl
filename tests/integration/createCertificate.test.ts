@@ -7,7 +7,7 @@ import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
-describe('Create Certificate', function () {
+describe.only('Create Certificate', function () {
   dotenv.config()
   this.timeout(30000)
 
@@ -53,7 +53,11 @@ describe('Create Certificate', function () {
     console.log('\ncertificate:\n', certificate)
 
     // Cancel the certificate
-    const success = await zerossl.cancelCertificate(certificate.id)
+    // const success = await zerossl.cancelCertificate(certificate.id)
+    // expect(success).to.equal(true)
+
+    // Delete the certificate
+    const success = await zerossl.deleteCertificate(certificate.id)
     expect(success).to.equal(true)
   })
 })
