@@ -7,6 +7,9 @@ import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
+const commonName = 'example.com'
+const emailAddress = 'email@example.com'
+
 describe('Create Certificate', function () {
   dotenv.config()
   this.timeout(30000)
@@ -28,10 +31,10 @@ describe('Create Certificate', function () {
       country: 'GB',
       state: 'England',
       locality: 'London',
-      organization: 'Example Corp',
-      organizationUnit: 'IT',
-      email: 'admin@example.com',
-      commonName: 'example.com'
+      organization: '',
+      organizationUnit: '',
+      email: emailAddress,
+      commonName: commonName
     }
     const csr = zerossl.generateCSR(keyPair, csrOptions)
     expect(csr).to.be.a('string')
@@ -39,7 +42,7 @@ describe('Create Certificate', function () {
     // Create a certificate
     const certificate = await zerossl.createCertificate({
       csr: csr,
-      domains: ['example.com'],
+      domains: [commonName],
       validityDays: 90,
       strictDomains: true
     })
@@ -57,7 +60,7 @@ describe('Create Certificate', function () {
     // expect(success).to.equal(true)
 
     // Delete the certificate
-    const success = await zerossl.deleteCertificate(certificate.id)
-    expect(success).to.equal(true)
+    // const success = await zerossl.deleteCertificate(certificate.id)
+    // expect(success).to.equal(true)
   })
 })

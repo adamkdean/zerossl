@@ -3,15 +3,13 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
 const certificateId = ''
 
-describe('Verify Domains', function () {
+describe('Download Certificate', function () {
   dotenv.config()
   this.timeout(30000)
 
@@ -23,17 +21,20 @@ describe('Verify Domains', function () {
 
   it('should verify a domain', async () => {
     const certificate = await zerossl.getCertificate(certificateId)
-
     console.log('\ncertificate:\n', certificate)
-    console.log(certificate.validation)
 
-    const result: any = await zerossl.verifyDomains(certificateId, { validation_method: 'HTTP_CSR_HASH' })
-    console.log(result)
+    expect(certificate.status).to.equal('valid')
+    if (certificate.status !== 'valid') {
+      console.error('certificate is not valid, cannot download certificate files')
+      return
+    }
 
-    expect(result.error).to.equal(undefined)
-    expect(result.status).to.equal('pending_validation')
+    const certFiles = await zerossl.downloadCertificate(certificateId)
+    console.log('\ncertFiles:\n', certFiles)
 
-    const certificateNow = await zerossl.getCertificate(certificateId)
-    console.log('\ncertificate now:\n', certificateNow)
+    expect(certFiles['ca_bundle.crt']).to.be.a('string')
+    expect(certFiles['ca_bundle.crt']).to.have.length.above(0)
+    expect(certFiles['certificate.crt']).to.be.a('string')
+    expect(certFiles['certificate.crt']).to.have.length.above(0)
   })
 })

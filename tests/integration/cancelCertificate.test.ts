@@ -9,7 +9,7 @@ import { expect } from 'chai'
 
 const certificateId = ''
 
-describe('Get Certificate', function () {
+describe('Cancel Certificate', function () {
   dotenv.config()
   this.timeout(30000)
 
@@ -19,15 +19,13 @@ describe('Get Certificate', function () {
   expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
   expect(zerossl.options.accessKey).to.equal(accessKey)
 
-  it('should get a certificate', async () => {
-    // Get a certificate
-    const certificate = await zerossl.getCertificate(certificateId)
+  it('should cancel a certificate', async () => {
+    // Cancel the certificate
+    const success = await zerossl.cancelCertificate(certificateId)
+    expect(success).to.equal(true)
 
-    // Check the certificate
-    expect(certificate.id).to.be.a('string')
-    expect(certificate.id).to.equal(certificateId)
-
-    console.log('\ncertificate:\n', certificate)
-    console.log(certificate.validation)
+    // Delete the certificate
+    // const success = await zerossl.deleteCertificate(certificate.id)
+    // expect(success).to.equal(true)
   })
 })
