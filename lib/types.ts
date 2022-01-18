@@ -74,7 +74,7 @@ export type ListCertificateOptions = {
   page?: number
   limit?: number
   search?: string
-  certificate_status: 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire'
+  certificate_status?: 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire'
 }
 
 export type VerificationStatus = {
