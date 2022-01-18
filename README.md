@@ -2,7 +2,7 @@
 
 ZeroSSL REST API wrapper based on the [ZeroSSL REST API documentation](https://zerossl.com/documentation/api/).
 
-[![npm version](https://img.shields.io/npm/v/zerossl)](https://www.npmjs.com/package/zerossl) [![npm downloads](https://img.shields.io/npm/dt/zerossl)](https://www.npmjs.com/package/zerossl) [![license](https://img.shields.io/npm/l/zerossl)](LICENSE.md) [![github stars](https://image.shields.io/github/stars/adamkdean/zerossl)] [TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF)
+[![npm version](https://img.shields.io/npm/v/zerossl)](https://www.npmjs.com/package/zerossl) [![npm downloads](https://img.shields.io/npm/dt/zerossl)](https://www.npmjs.com/package/zerossl) [![license](https://img.shields.io/npm/l/zerossl)](LICENSE.md) [![github stars](https://image.shields.io/github/stars/adamkdean/zerossl)](https://github.com/adamkdean/zerossl) [TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF)
 
 - [zerossl](#zerossl)
   - [Development](#development)
