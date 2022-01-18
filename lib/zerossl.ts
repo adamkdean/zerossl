@@ -63,7 +63,7 @@ export class ZeroSSL {
   }
 
   // Verify Domains
-  public async verifyDomains(id: string, options: VerifyDomainOptions): Promise<unknown> {
+  public async verifyDomains(id: string, options: VerifyDomainOptions): Promise<CertificateRecord> {
     const isEmailValidation = options.validation_method === 'EMAIL'
     const missingEmail = isEmailValidation && !options.validation_email
     if (missingEmail) throw new Error('Missing verification option: validation_email')
@@ -78,9 +78,7 @@ export class ZeroSSL {
     if (isEmailValidation) postFn = postFn.field('validation_email', options.validation_email as string)
 
     const result = await this.performRequest(postFn)
-
-    // TODO: determine data structure of a successful response
-    return result.body
+    return result.body as CertificateRecord
   }
 
   // Download Certificate (inline)
