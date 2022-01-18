@@ -10,6 +10,7 @@
 //
 // Error Code / Type  Description
 //
+// 0 domain_control_validation_failed (No message, undocumented error)
 // 101 invalid_access_key  User has provided an invalid API access key.
 // 103 invalid_api_function  User has provided an invalid API function.
 // 2800 incorrect_request_type  User has made a non-supported API request.
@@ -57,6 +58,14 @@
 import { ZeroSSLError } from './types'
 
 export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
+  //
+  // Errors - Undocumented
+  0: {
+    code: 0,
+    type: 'domain_control_validation_failed',
+    message: ''
+  },
+
   //
   // Errors - General
   //
