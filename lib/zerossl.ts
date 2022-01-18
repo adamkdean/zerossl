@@ -75,7 +75,7 @@ export class ZeroSSL {
       .type('form')
       .field('validation_method', options.validation_method)
 
-    if (isEmailValidation) postFn = postFn.field('validation_email', options.validation_email)
+    if (isEmailValidation) postFn = postFn.field('validation_email', options.validation_email as string)
 
     const result = await this.performRequest(postFn)
 
