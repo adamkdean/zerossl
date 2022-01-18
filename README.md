@@ -1,10 +1,10 @@
-# zerossl
+# ZeroSSL
 
 ZeroSSL REST API wrapper based on the [ZeroSSL REST API documentation](https://zerossl.com/documentation/api/).
 
 ![TypeScript](https://shields.io/badge/TypeScript-3178C6?logo=TypeScript&logoColor=FFF) [![github stars](https://img.shields.io/github/stars/adamkdean/zerossl)](https://github.com/adamkdean/zerossl) [![npm version](https://img.shields.io/npm/v/zerossl)](https://www.npmjs.com/package/zerossl) [![npm downloads](https://img.shields.io/npm/dt/zerossl)](https://www.npmjs.com/package/zerossl) [![license](https://img.shields.io/npm/l/zerossl)](LICENSE.md)
 
-- [zerossl](#zerossl)
+- [ZeroSSL](#zerossl)
   - [Usage](#usage)
     - [Initialization](#initialization)
     - [Examples](#examples)
@@ -23,7 +23,7 @@ ZeroSSL REST API wrapper based on the [ZeroSSL REST API documentation](https://z
 This library provides a wrapper for the [ZeroSSL REST API](https://zerossl.com/documentation/api).
 
 It has been recently developed and as such, may still require some refinement. Please feel free
-to feedback by opening an issue. Community contributions are appreciation.
+to feedback by opening an issue. Community contributions are appreciated.
 
 *Note: while this is written in TypeScript, it is transpiled to JavaScript and will work
 perfectly fine in a regular JavaScript project. Just ignore the TypeScript specific
@@ -113,6 +113,8 @@ console.log(verifyResult)
 ```
 
 For more examples, see the integration tests.
+
+For an example of a basic HTTP verification server, see [adamkdean/zerossl-verify](https://github.com/adamkdean/zerossl-verify).
 
 ### Methods
 
