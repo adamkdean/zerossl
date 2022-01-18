@@ -1,12 +1,15 @@
 {
   "name": "zerossl",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ZeroSSL REST API wrapper",
   "keywords": [
-    "zerossl",
-    "ssl",
-    "tls",
-    "api"
+    "ZeroSSL",
+    "SSL",
+    "TLS",
+    "CSR",
+    "RSA",
+    "PKI",
+    "API"
   ],
   "author": "Adam K Dean <adamkdean@googlemail.com>",
   "license": "MIT",
