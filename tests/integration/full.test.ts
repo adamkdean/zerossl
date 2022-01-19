@@ -11,12 +11,12 @@ import { expect } from 'chai'
 const commonName = 'example.com'
 const emailAddress = 'email@example.com'
 
-describe.only('Full Test', function () {
+describe('Full Test', function () {
   dotenv.config()
   this.timeout(30000)
 
   // Initialize ZeroSSL
-  const accessKey = process.env.ZEROSSL_API_KEY || ''
+  const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
   const zerossl = new ZeroSSL({ accessKey })
   expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
   expect(zerossl.options.accessKey).to.equal(accessKey)
@@ -71,8 +71,8 @@ describe.only('Full Test', function () {
 
     // Our system is currently issuing your certificate. This page will refresh automatically every few seconds.
 
-    console.log('sleeping for 5 seconds...')
-    await new Promise(resolve => setTimeout(resolve, 5000))
+    // console.log('sleeping for 5 seconds...')
+    // await new Promise(resolve => setTimeout(resolve, 5000))
   })
 
   // it('should download the certificate', async () => {

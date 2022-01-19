@@ -16,7 +16,7 @@ describe('Verify Domains', function () {
   this.timeout(30000)
 
   // Initialize ZeroSSL
-  const accessKey = process.env.ZEROSSL_API_KEY || ''
+  const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
   const zerossl = new ZeroSSL({ accessKey })
   expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
   expect(zerossl.options.accessKey).to.equal(accessKey)

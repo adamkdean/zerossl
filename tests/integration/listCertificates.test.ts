@@ -7,12 +7,12 @@ import { ZeroSSL } from '../../lib'
 import dotenv from 'dotenv'
 import { expect } from 'chai'
 
-describe('List Certificates', function () {
+describe.only('List Certificates', function () {
   dotenv.config()
   this.timeout(30000)
 
   // Initialize ZeroSSL
-  const accessKey = process.env.ZEROSSL_API_KEY || ''
+  const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
   const zerossl = new ZeroSSL({ accessKey })
   expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
   expect(zerossl.options.accessKey).to.equal(accessKey)
