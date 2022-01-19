@@ -73,7 +73,6 @@ var ZeroSSL = (function () {
                     case 1:
                         response = _a.sent();
                         if (response.status !== 200 || response.body.success === false) {
-                            console.log(response.body);
                             errorCode = response.body.error.code || 0;
                             error = errors_1.ZeroSSLErrorMap[errorCode];
                             throw new Error("".concat(error.code, " (").concat(error.type, ") ").concat(error.message));
