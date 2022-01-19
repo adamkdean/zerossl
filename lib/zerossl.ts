@@ -38,7 +38,6 @@ export class ZeroSSL {
   private async performRequest(request: SuperAgentRequest): Promise<superagent.Response> {
     const response = await request
     if (response.status !== 200 || response.body.success === false) {
-      console.log(response.body)
       const errorCode = response.body.error.code || 0
       const error = ZeroSSLErrorMap[errorCode]
       throw new Error(`${error.code} (${error.type}) ${error.message}`)
