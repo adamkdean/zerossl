@@ -2,6 +2,11 @@
 exports.__esModule = true;
 exports.ZeroSSLErrorMap = void 0;
 exports.ZeroSSLErrorMap = {
+    0: {
+        code: 0,
+        type: 'domain_control_validation_failed',
+        message: ''
+    },
     101: {
         code: 101,
         type: 'invalid_access_key',

@@ -5,7 +5,7 @@ export declare class ZeroSSL {
     private queryString;
     private performRequest;
     createCertificate(options: CreateCertificateOptions): Promise<CertificateRecord>;
-    verifyDomains(id: string, options: VerifyDomainOptions): Promise<unknown>;
+    verifyDomains(id: string, options: VerifyDomainOptions): Promise<CertificateRecord>;
     downloadCertificate(id: string): Promise<Certificate>;
     getCertificate(id: string): Promise<CertificateRecord>;
     listCertificates(options?: ListCertificateOptions): Promise<CertificateList>;
