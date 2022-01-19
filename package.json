@@ -20,10 +20,13 @@
   "main": "dist/lib/index.js",
   "scripts": {
     "build": "tsc",
+    "build:commit": "npm run build && git add dist/ && git commit -m 'update dist'",
     "lint": "eslint --ext .ts src",
     "lint:fix": "eslint --fix --ext .ts src",
+    "prebuild": "rm -r dist",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/unit/*.ts'",
-    "test:integration": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/integration/*.ts'"
+    "test:integration": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/integration/*.ts'",
+    "version": "npm run build:commit && git add package.json"
   },
   "devDependencies": {
     "@edge/eslint-config-typescript": "^0.1.1",
