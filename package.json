@@ -46,6 +46,6 @@
   },
   "dependencies": {
     "node-forge": "^1.2.1",
-    "superagent": "^7.0.2"
+    "superagent": "^7.1.1"
   }
 }
