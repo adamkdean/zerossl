@@ -36,7 +36,7 @@ Creating an intance of ZeroSSL is easy. Make sure to keep your API key secret.
 ```typescript
 import { ZeroSSL } from 'zerossl'
 
-const accessKey = process.env.ZEROSSL_API_KEY || ''
+const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
 const zerossl = new ZeroSSL({ accessKey })
 ```
 
@@ -47,7 +47,7 @@ const zerossl = new ZeroSSL({ accessKey })
 ```typescript
 import { ZeroSSL } from 'zerossl'
 
-const accessKey = process.env.ZEROSSL_API_KEY || ''
+const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
 const zerossl = new ZeroSSL({ accessKey })
 
 const certificates = await zerossl.listCertificates()
@@ -62,7 +62,7 @@ certificates.results.forEach(certificate => {
 ```typescript
 import { ZeroSSL } from 'zerossl'
 
-const accessKey = process.env.ZEROSSL_API_KEY || ''
+const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
 const zerossl = new ZeroSSL({ accessKey })
 
 const certificate = await zerossl.getCertificates('<CERTIFICATE_ID>')
@@ -75,7 +75,7 @@ console.log(certificate)
 ```typescript
 import { ZeroSSL } from 'zerossl'
 
-const accessKey = process.env.ZEROSSL_API_KEY || ''
+const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
 const zerossl = new ZeroSSL({ accessKey })
 
 // Generate a keypair
