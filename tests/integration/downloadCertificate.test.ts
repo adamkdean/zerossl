@@ -23,9 +23,9 @@ describe('Download Certificate', function () {
     const certificate = await zerossl.getCertificate(certificateId)
     console.log('\ncertificate:\n', certificate)
 
-    expect(certificate.status).to.equal('valid')
-    if (certificate.status !== 'valid') {
-      console.error('certificate is not valid, cannot download certificate files')
+    expect(certificate.status).to.equal('issued')
+    if (certificate.status !== 'issued') {
+      console.error('certificate has not been issued, cannot download certificate files')
       return
     }
 
