@@ -19,7 +19,7 @@ describe('Download Certificate', function () {
   expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
   expect(zerossl.options.accessKey).to.equal(accessKey)
 
-  it('should verify a domain', async () => {
+  it('should download a certificate', async () => {
     const certificate = await zerossl.getCertificate(certificateId)
     console.log('\ncertificate:\n', certificate)
 
