@@ -13,6 +13,7 @@ ZeroSSL REST API wrapper based on the [ZeroSSL REST API documentation](https://z
     - [Create a certificate](#create-a-certificate)
     - [Methods](#methods)
     - [Types](#types)
+    - [Using a custom key pair](#using-a-custom-key-pair)
   - [Tests](#tests)
   - [Dependencies](#dependencies)
   - [Disclaimer](#disclaimer)
@@ -141,6 +142,28 @@ You can access all the types used by this library by importing them from `zeross
 
 ```typescript
 import { CertificateRecord } from 'zerossl/lib/types'
+```
+
+### Using a custom key pair
+
+To use a custom key pair, you must ensure the private key is an RSA key in PEM format, and that the public key is in PEM format too.
+
+To generate an RSA key pair, and convert the public key to PEM:
+
+```sh
+ssh-keygen -m pem -t rsa -b 4096
+ssh-keygen -f <PUBLIC_KEY_FILE> -e -m pem > <PUBLIC_KEY_FILE>
+```
+
+You then simply need to create a KeyPair object:
+
+```typescript
+const keyPair = {
+  privateKey: '<PRIVATE_KEY_PEM>',
+  publicKey: '<PUBLIC_KEY_PEM>'
+}
+
+zerossl.generateCSR(keyPair, { ... })
 ```
 
 ## Tests
