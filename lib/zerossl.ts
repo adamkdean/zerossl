@@ -40,7 +40,14 @@ export class ZeroSSL {
     if (response.status !== 200 || response.body.success === false) {
       const errorCode = response.body.error.code || 0
       const error = ZeroSSLErrorMap[errorCode]
-      throw new Error(`${error.code} (${error.type}) ${error.message}`)
+
+      throw ({
+        message: error.message,
+        code: error.code,
+        type: error.type,
+        status: response.status,
+      })
+      
     }
     return response
   }
