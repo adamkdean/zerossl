@@ -75,7 +75,12 @@ var ZeroSSL = (function () {
                         if (response.status !== 200 || response.body.success === false) {
                             errorCode = response.body.error.code || 0;
                             error = errors_1.ZeroSSLErrorMap[errorCode];
-                            throw new Error("".concat(error.code, " (").concat(error.type, ") ").concat(error.message));
+                            throw ({
+                                message: error.message,
+                                code: error.code,
+                                type: error.type,
+                                status: response.status
+                            });
                         }
                         return [2, response];
                 }
@@ -242,15 +247,15 @@ var ZeroSSL = (function () {
             });
         });
     };
-    ZeroSSL.prototype.deleteCertificate = function (id) {
+    ZeroSSL.prototype.revokeCertificate = function (id) {
         return __awaiter(this, void 0, void 0, function () {
             var qs, url, postFn, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
-                        url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "?").concat(qs);
-                        postFn = superagent_1["default"]["delete"](url);
+                        url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/revoke?").concat(qs);
+                        postFn = superagent_1["default"].post(url);
                         return [4, this.performRequest(postFn)];
                     case 1:
                         result = _a.sent();
