@@ -45,9 +45,9 @@ export class ZeroSSL {
         message: error.message,
         code: error.code,
         type: error.type,
-        status: response.status,
+        status: response.status
       })
-      
+
     }
     return response
   }
