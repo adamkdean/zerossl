@@ -148,6 +148,16 @@ export class ZeroSSL {
     return result.body.success === 1
   }
 
+  // Revoke Certificate
+  public async revokeCertificate(id: string): Promise<boolean> {
+    const qs = this.queryString({ access_key: this.options.accessKey })
+    const url = `${this.options.apiUrl}/certificates/${id}/revoke?${qs}`
+    const postFn = superagent.post(url)
+    const result = await this.performRequest(postFn)
+
+    return result.body.success === 1
+  }
+
   // Validate Certificate Signing Request
   public async validateCSR(csr: string): Promise<CertificateSigningRequestValidationResult> {
     const qs = this.queryString({ access_key: this.options.accessKey })
