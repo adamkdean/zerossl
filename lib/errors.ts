@@ -66,6 +66,13 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     message: ''
   },
 
+  // 2835 is a new error when trying to use delete endpoint (currently removed)
+  2835: {
+    code: 2835,
+    type: 'certificate_cannot_be_deleted',
+    message: 'This endpoint has been removed. There is no valid reason to delete a certificate - instead they should be expired, revoked or cancelled'
+  },
+
   //
   // Errors - General
   //
