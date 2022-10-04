@@ -130,10 +130,23 @@ public async listCertificates(options?: ListCertificateOptions): Promise<Certifi
 public async verificationStatus(id: string): Promise<VerificationStatus>
 public async resendVerification(id: string): Promise<boolean>
 public async cancelCertificate(id: string): Promise<boolean>
-public async deleteCertificate(id: string): Promise<boolean>
+public async revokeCertificate(id: string): Promise<boolean>
 public async validateCSR(csr: string): Promise<CertificateSigningRequestValidationResult>
 public generateKeyPair(bits = 2048): KeyPair
 public generateCSR(keypair: KeyPair, options: CertificateSigningRequestOptions): string
+```
+
+### Error Return
+
+If an error occurs in your request, we will trigger a throw error detailing the error name, error code, error type and error status code through an object as you can see below:
+
+```json
+{
+    "message": "An error has occurred",
+    "code": "000",
+    "type": "error_example",
+    "status" : 400
+}
 ```
 
 ### Types

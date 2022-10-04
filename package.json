@@ -20,8 +20,8 @@
   "main": "dist/lib/index.js",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint --ext .ts src",
-    "lint:fix": "eslint --fix --ext .ts src",
+    "lint": "eslint --ext .ts lib",
+    "lint:fix": "eslint --fix --ext .ts lib",
     "prebuild": "rm -r dist",
     "prepublishOnly": "npm run build",
     "test": "env TS_NODE_COMPILER_OPTIONS='{\"module\": \"commonjs\" }' mocha -r ts-node/register 'tests/unit/*.ts'",
