@@ -12,7 +12,7 @@ export declare class ZeroSSL {
     verificationStatus(id: string): Promise<VerificationStatus>;
     resendVerification(id: string): Promise<boolean>;
     cancelCertificate(id: string): Promise<boolean>;
-    deleteCertificate(id: string): Promise<boolean>;
+    revokeCertificate(id: string): Promise<boolean>;
     validateCSR(csr: string): Promise<CertificateSigningRequestValidationResult>;
     generateKeyPair(bits?: number): KeyPair;
     generateCSR(keypair: KeyPair, options: CertificateSigningRequestOptions): string;

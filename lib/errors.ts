@@ -66,6 +66,13 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     message: ''
   },
 
+  // 2835 is a new error when trying to use delete endpoint (currently removed)
+  2835: {
+    code: 2835,
+    type: 'certificate_cannot_be_deleted',
+    message: 'This endpoint has been removed. There is no valid reason to delete a certificate - instead they should be expired, revoked or cancelled'
+  },
+
   //
   // Errors - General
   //
@@ -78,6 +85,16 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     code: 103,
     type: 'invalid_api_function',
     message: 'User has provided an invalid API function.'
+  },
+  110: {
+    code: 110,
+    type: 'invalid_request_body',
+    message: 'The body of your request was wrong. Please check your request arguments.'
+  },
+  111: {
+    code: 111,
+    type: 'internal_server_error',
+    message: 'Something went wrong. If the problem persists please contact our support team (support@zerossl.com).'
   },
   2800: {
     code: 2800,
@@ -198,6 +215,11 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     type: 'duplicate_certificates_found',
     message: 'Domain can no longer be protected using Free Plan, upgrade to Basic Plan required.'
   },
+  2841: {
+    code: 2841,
+    type: 'certificate_creation_locked_unpaid_invoices',
+    message: 'Your account has been temporarily suspended due to unpaid invoices. Please pay your open invoices in order to unlock this endpoint.'
+  },
 
   //
   // Errors - Verify Domains
@@ -210,7 +232,7 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
   2823: {
     code: 2823,
     type: 'failed_validating_certificate',
-    message: 'Domain verification failed and must be retried.'
+    message: 'Domain verification failed and must be retried. (restricted TLD, domain name is too long or CSR compromised)'
   },
   2824: {
     code: 2824,
@@ -266,6 +288,20 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     type: 'certificate_not_issued',
     message: 'The given certificate has not been issued yet.'
   },
+  2860: {
+    code: 2860,
+    type: 'certificate_not_downloadable',
+    message: 'The certificate can currently not be downloaded.'
+  },
+
+  //
+  // Errors - Revoke Certiticate
+  //
+  2906: {
+    code: 2906,
+    type: 'revocation_failed',
+    message: 'The certificate can not be revoked currently, please try again later. If the problem persists - especially in urgent cases like key compromise - please contact our support team (support@zerossl.com).'
+  },
 
   //
   // Errors - Cancel Certiticate
@@ -279,20 +315,6 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     code: 2834,
     type: 'failed_cancelling_certificate',
     message: 'Internal error cancelling certificate. Try again or contact support.'
-  },
-
-  //
-  // Errors - Delete Certiticate
-  //
-  2835: {
-    code: 2835,
-    type: 'certificate_cannot_be_deleted',
-    message: 'The given certificate cannot be deleted due to its status.'
-  },
-  2836: {
-    code: 2836,
-    type: 'failed_deleting_certificate',
-    message: 'Internal error deleting certificate. Try again or contact support.'
   },
 
   //
