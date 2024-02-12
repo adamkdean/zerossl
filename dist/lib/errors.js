@@ -1,6 +1,46 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 exports.__esModule = true;
-exports.ZeroSSLErrorMap = void 0;
+exports.findZeroSSLError = exports.ZeroSSLErrorMap = exports.ZeroSSLError = void 0;
+var ZeroSSLError = (function (_super) {
+    __extends(ZeroSSLError, _super);
+    function ZeroSSLError(status, data) {
+        var _this = _super.call(this, data.message) || this;
+        _this.name = 'ZeroSSLError';
+        _this.status = status;
+        _this.code = data.code;
+        _this.details = data.details;
+        _this.type = data.type;
+        return _this;
+    }
+    return ZeroSSLError;
+}(Error));
+exports.ZeroSSLError = ZeroSSLError;
 exports.ZeroSSLErrorMap = {
     0: {
         code: 0,
@@ -243,3 +283,10 @@ exports.ZeroSSLErrorMap = {
         message: 'Error retrieveing domain verification status. Try again and make sure Email Verification is selected.'
     }
 };
+function findZeroSSLError(code) {
+    if (exports.ZeroSSLErrorMap[code] !== undefined) {
+        return __assign({}, exports.ZeroSSLErrorMap[code]);
+    }
+    return {};
+}
+exports.findZeroSSLError = findZeroSSLError;

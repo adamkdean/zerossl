@@ -55,9 +55,25 @@
 // 2837 failed_resending_email  Internal error resending verification email. Try again or contact support.
 // 2838 failed_getting_validation_status  Error retrieveing domain verification status. Try again and make sure Email Verification is selected.
 
-import { ZeroSSLError } from './types'
+import { ZeroSSLErrorData } from './types'
 
-export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
+export class ZeroSSLError extends Error {
+  public code
+  public details
+  public status
+  public type
+
+  constructor(status: number, data: ZeroSSLErrorData) {
+    super(data.message)
+    this.name = 'ZeroSSLError'
+    this.status = status
+    this.code = data.code
+    this.details = data.details
+    this.type = data.type
+  }
+}
+
+export const ZeroSSLErrorMap: { [key: number]: ZeroSSLErrorData } = {
   //
   // Errors - Undocumented
   0: {
@@ -334,4 +350,15 @@ export const ZeroSSLErrorMap: { [key: number]: ZeroSSLError } = {
     type: 'failed_getting_validation_status',
     message: 'Error retrieveing domain verification status. Try again and make sure Email Verification is selected.'
   }
+}
+
+/**
+ * Find a ZeroSSL error by code.
+ * Returns a copy of the error, or if it is not found, an empty object.
+ */
+export function findZeroSSLError(code: number): ZeroSSLErrorData {
+  if (ZeroSSLErrorMap[code] !== undefined) {
+    return { ...ZeroSSLErrorMap[code] }
+  }
+  return {}
 }

@@ -55,7 +55,7 @@ export type CertificateSigningRequestOptions = {
 
 export type CertificateSigningRequestValidationResult = {
   valid: boolean
-  error?: ZeroSSLError
+  error?: ZeroSSLErrorData
 }
 
 export type CreateCertificateOptions = {
@@ -97,19 +97,37 @@ export type ZeroSSLOptions = {
   apiUrl?: string
 }
 
-export type ZeroSSLError = {
+export type ZeroSSLErrorData = {
   code?: number
   type?: string
   message?: string
-  details?: {
+  details?: ZeroSSLErrorDetail
+}
+
+export type ZeroSSLErrorDetail = ZeroSSLVerifyDomainsCNAMEErrorDetail | ZeroSSLVerifyDomainsHTTPFileUploadErrorDetail
+
+export type ZeroSSLVerifyDomainsCNAMEErrorDetail = {
+  [domain: string]: {
     [domain: string]: {
-      [domain: string]: {
-        cname_found: number
-        record_correct: number
-        target_host: string
-        target_record: string
-        actual_record: string
-      }
+      cname_found: number
+      record_correct: number
+      target_host: string
+      target_record: string
+      actual_record: string
+    }
+  }
+}
+
+export type ZeroSSLVerifyDomainsHTTPFileUploadErrorDetail = {
+  [domain: string]: {
+    [path: string]: {
+      validation_successful: false | undefined
+      file_found: number
+      error: boolean
+      error_slug: string
+      error_info: string
+    } | {
+      validation_successful: true
     }
   }
 }

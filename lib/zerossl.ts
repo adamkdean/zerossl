@@ -3,7 +3,6 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
-import { ZeroSSLErrorMap } from './errors'
 import forge from 'node-forge'
 import {
   Certificate,
@@ -18,6 +17,7 @@ import {
   VerifyDomainOptions,
   ZeroSSLOptions
 } from './types'
+import { ZeroSSLError, findZeroSSLError } from './errors'
 import superagent, { SuperAgentRequest } from 'superagent'
 
 const defaultOptions = {
@@ -38,16 +38,10 @@ export class ZeroSSL {
   private async performRequest(request: SuperAgentRequest): Promise<superagent.Response> {
     const response = await request
     if (response.status !== 200 || response.body.success === false) {
-      const errorCode = response.body.error.code || 0
-      const error = ZeroSSLErrorMap[errorCode]
+      const error = findZeroSSLError(response.body.error?.code || 0)
+      if (response.body.error?.details) error.details = response.body.error.details
 
-      throw ({
-        message: error.message,
-        code: error.code,
-        type: error.type,
-        status: response.status
-      })
-
+      throw new ZeroSSLError(response.status, error)
     }
     return response
   }
