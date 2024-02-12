@@ -120,7 +120,7 @@ export type ZeroSSLVerifyDomainsCNAMEErrorDetail = {
 
 export type ZeroSSLVerifyDomainsHTTPFileUploadErrorDetail = {
   [domain: string]: {
-    [domain: string]: {
+    [path: string]: {
       validation_successful: false | undefined
       file_found: number
       error: boolean
