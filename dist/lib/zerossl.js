@@ -25,7 +25,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     function verb(n) { return function (v) { return step([n, v]); }; }
     function step(op) {
         if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
             if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
             if (y = 0, t) op = [op[0] & 2, t.value];
             switch (op[0]) {
@@ -51,8 +51,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 exports.ZeroSSL = void 0;
-var errors_1 = require("./errors");
 var node_forge_1 = __importDefault(require("node-forge"));
+var errors_1 = require("./errors");
 var superagent_1 = __importDefault(require("superagent"));
 var defaultOptions = {
     apiUrl: 'api.zerossl.com'
@@ -65,22 +65,19 @@ var ZeroSSL = (function () {
         return Object.keys(params).map(function (key) { return "".concat(key, "=").concat(params[key]); }).join('&');
     };
     ZeroSSL.prototype.performRequest = function (request) {
+        var _a, _b;
         return __awaiter(this, void 0, void 0, function () {
-            var response, errorCode, error;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var response, error;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0: return [4, request];
                     case 1:
-                        response = _a.sent();
+                        response = _c.sent();
                         if (response.status !== 200 || response.body.success === false) {
-                            errorCode = response.body.error.code || 0;
-                            error = errors_1.ZeroSSLErrorMap[errorCode];
-                            throw ({
-                                message: error.message,
-                                code: error.code,
-                                type: error.type,
-                                status: response.status
-                            });
+                            error = (0, errors_1.findZeroSSLError)(((_a = response.body.error) === null || _a === void 0 ? void 0 : _a.code) || 0);
+                            if ((_b = response.body.error) === null || _b === void 0 ? void 0 : _b.details)
+                                error.details = response.body.error.details;
+                            throw new errors_1.ZeroSSLError(response.status, error);
                         }
                         return [2, response];
                 }

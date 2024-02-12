@@ -1,15 +1,15 @@
-export declare type Certificate = {
+export type Certificate = {
     'certificate.crt': string;
     'ca_bundle.crt': string;
 };
-export declare type CertificateList = {
+export type CertificateList = {
     total_count: number;
     result_count: number;
     page: number;
     limit: number;
     results: CertificateRecord[];
 };
-export declare type CertificateRecord = {
+export type CertificateRecord = {
     id: string;
     type: string;
     common_name: string;
@@ -35,7 +35,7 @@ export declare type CertificateRecord = {
         };
     };
 };
-export declare type CertificateSigningRequestOptions = {
+export type CertificateSigningRequestOptions = {
     country: string;
     state: string;
     locality: string;
@@ -44,27 +44,27 @@ export declare type CertificateSigningRequestOptions = {
     email?: string;
     commonName: string;
 };
-export declare type CertificateSigningRequestValidationResult = {
+export type CertificateSigningRequestValidationResult = {
     valid: boolean;
-    error?: ZeroSSLError;
+    error?: ZeroSSLErrorData;
 };
-export declare type CreateCertificateOptions = {
+export type CreateCertificateOptions = {
     csr: string;
     domains: string[];
     validityDays: 90 | 365;
     strictDomains: boolean;
 };
-export declare type KeyPair = {
+export type KeyPair = {
     publicKey: string;
     privateKey: string;
 };
-export declare type ListCertificateOptions = {
+export type ListCertificateOptions = {
     page?: number;
     limit?: number;
     search?: string;
     certificate_status?: 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire';
 };
-export declare type VerificationStatus = {
+export type VerificationStatus = {
     validation_completed: number;
     details: {
         [domain: string]: {
@@ -73,27 +73,42 @@ export declare type VerificationStatus = {
         };
     };
 };
-export declare type VerifyDomainOptions = {
+export type VerifyDomainOptions = {
     validation_method: 'EMAIL' | 'CNAME_CSR_HASH' | 'HTTP_CSR_HASH' | 'HTTPS_CSR_HASH';
     validation_email?: string;
 };
-export declare type ZeroSSLOptions = {
+export type ZeroSSLOptions = {
     accessKey: string;
     apiUrl?: string;
 };
-export declare type ZeroSSLError = {
+export type ZeroSSLErrorData = {
     code?: number;
     type?: string;
     message?: string;
-    details?: {
+    details?: ZeroSSLErrorDetail;
+};
+export type ZeroSSLErrorDetail = ZeroSSLVerifyDomainsCNAMEErrorDetail | ZeroSSLVerifyDomainsHTTPFileUploadErrorDetail;
+export type ZeroSSLVerifyDomainsCNAMEErrorDetail = {
+    [domain: string]: {
         [domain: string]: {
-            [domain: string]: {
-                cname_found: number;
-                record_correct: number;
-                target_host: string;
-                target_record: string;
-                actual_record: string;
-            };
+            cname_found: number;
+            record_correct: number;
+            target_host: string;
+            target_record: string;
+            actual_record: string;
+        };
+    };
+};
+export type ZeroSSLVerifyDomainsHTTPFileUploadErrorDetail = {
+    [domain: string]: {
+        [path: string]: {
+            validation_successful: false | undefined;
+            file_found: number;
+            error: boolean;
+            error_slug: string;
+            error_info: string;
+        } | {
+            validation_successful: true;
         };
     };
 };
