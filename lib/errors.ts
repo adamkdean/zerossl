@@ -61,6 +61,7 @@ export class ZeroSSLError extends Error {
   public code
   public details
   public status
+  public type
 
   constructor(status: number, data: ZeroSSLErrorData) {
     super(data.message)
@@ -68,6 +69,7 @@ export class ZeroSSLError extends Error {
     this.status = status
     this.code = data.code
     this.details = data.details
+    this.type = data.type
   }
 }
 
