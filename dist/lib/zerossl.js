@@ -53,7 +53,6 @@ exports.__esModule = true;
 exports.ZeroSSL = void 0;
 var node_forge_1 = __importDefault(require("node-forge"));
 var errors_1 = require("./errors");
-var superagent_1 = __importDefault(require("superagent"));
 var defaultOptions = {
     apiUrl: 'api.zerossl.com'
 };
@@ -92,7 +91,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates?").concat(qs);
-                        postFn = superagent_1["default"].post(url)
+                        postFn = superagent.post(url)
                             .type('form')
                             .field('certificate_domains', options.domains.join(','))
                             .field('certificate_csr', options.csr)
@@ -118,7 +117,7 @@ var ZeroSSL = (function () {
                             throw new Error('Missing verification option: validation_email');
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/challenges?").concat(qs);
-                        postFn = superagent_1["default"].post(url)
+                        postFn = superagent.post(url)
                             .type('form')
                             .field('validation_method', options.validation_method);
                         if (isEmailValidation)
@@ -139,7 +138,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/download/return?").concat(qs);
-                        getFn = superagent_1["default"].get(url);
+                        getFn = superagent.get(url);
                         return [4, this.performRequest(getFn)];
                     case 1:
                         result = _a.sent();
@@ -156,7 +155,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "?").concat(qs);
-                        getFn = superagent_1["default"].get(url);
+                        getFn = superagent.get(url);
                         return [4, this.performRequest(getFn)];
                     case 1:
                         result = _a.sent();
@@ -184,7 +183,7 @@ var ZeroSSL = (function () {
                         }
                         qs = this.queryString(query);
                         url = "".concat(this.options.apiUrl, "/certificates?").concat(qs);
-                        getFn = superagent_1["default"].get(url);
+                        getFn = superagent.get(url);
                         return [4, this.performRequest(getFn)];
                     case 1:
                         result = _a.sent();
@@ -201,7 +200,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/status?").concat(qs);
-                        getFn = superagent_1["default"].get(url);
+                        getFn = superagent.get(url);
                         return [4, this.performRequest(getFn)];
                     case 1:
                         result = _a.sent();
@@ -218,7 +217,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/challenges/email?").concat(qs);
-                        postFn = superagent_1["default"].post(url);
+                        postFn = superagent.post(url);
                         return [4, this.performRequest(postFn)];
                     case 1:
                         result = _a.sent();
@@ -235,7 +234,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/cancel?").concat(qs);
-                        postFn = superagent_1["default"].post(url);
+                        postFn = superagent.post(url);
                         return [4, this.performRequest(postFn)];
                     case 1:
                         result = _a.sent();
@@ -252,7 +251,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/revoke?").concat(qs);
-                        postFn = superagent_1["default"].post(url);
+                        postFn = superagent.post(url);
                         return [4, this.performRequest(postFn)];
                     case 1:
                         result = _a.sent();
@@ -269,7 +268,7 @@ var ZeroSSL = (function () {
                     case 0:
                         qs = this.queryString({ access_key: this.options.accessKey });
                         url = "".concat(this.options.apiUrl, "/validation/csr?").concat(qs);
-                        postFn = superagent_1["default"].post(url)
+                        postFn = superagent.post(url)
                             .set('Content-Type', 'application/json')
                             .send({ csr: csr });
                         return [4, this.performRequest(postFn)];
