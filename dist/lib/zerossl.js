@@ -60,54 +60,58 @@ var ZeroSSL = (function () {
     function ZeroSSL(options) {
         this.options = __assign(__assign({}, defaultOptions), options);
     }
-    ZeroSSL.prototype.queryString = function (params) {
-        return Object.keys(params).map(function (key) { return "".concat(key, "=").concat(params[key]); }).join('&');
-    };
-    ZeroSSL.prototype.performRequest = function (request) {
-        var _a, _b;
+    ZeroSSL.prototype.performRequest = function (url, request) {
+        var _a, _b, _c;
         return __awaiter(this, void 0, void 0, function () {
-            var response, error;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4, request];
+            var response, body, error;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        if (request.method === "POST") {
+                            (_a = request.headers) !== null && _a !== void 0 ? _a : (request.headers = { "content-type": "application/x-www-form-urlencoded" });
+                        }
+                        return [4, fetch("https://" + url, request)];
                     case 1:
-                        response = _c.sent();
-                        if (response.status !== 200 || response.body.success === false) {
-                            error = (0, errors_1.findZeroSSLError)(((_a = response.body.error) === null || _a === void 0 ? void 0 : _a.code) || 0);
-                            if ((_b = response.body.error) === null || _b === void 0 ? void 0 : _b.details)
-                                error.details = response.body.error.details;
+                        response = _d.sent();
+                        return [4, response.json()];
+                    case 2:
+                        body = _d.sent();
+                        if (!response.ok || body.success === false) {
+                            error = (0, errors_1.findZeroSSLError)(((_b = body.error) === null || _b === void 0 ? void 0 : _b.code) || 0);
+                            if ((_c = body.error) === null || _c === void 0 ? void 0 : _c.details)
+                                error.details = body.error.details;
                             throw new errors_1.ZeroSSLError(response.status, error);
                         }
-                        return [2, response];
+                        return [2, body];
                 }
             });
         });
     };
     ZeroSSL.prototype.createCertificate = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, postFn, result;
+            var qs, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates?").concat(qs);
-                        postFn = superagent.post(url)
-                            .type('form')
-                            .field('certificate_domains', options.domains.join(','))
-                            .field('certificate_csr', options.csr)
-                            .field('certificate_validity_days', options.validityDays)
-                            .field('strict_domains', options.strictDomains);
-                        return [4, this.performRequest(postFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                        return [4, this.performRequest(url, {
+                                method: "POST",
+                                body: new URLSearchParams({
+                                    certificate_domains: options.domains.join(','),
+                                    certificate_csr: options.csr,
+                                    certificate_validity_days: options.validityDays.toString(10),
+                                    strict_domains: options.strictDomains.toString()
+                                }).toString()
+                            })];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
     };
     ZeroSSL.prototype.verifyDomains = function (id, options) {
         return __awaiter(this, void 0, void 0, function () {
-            var isEmailValidation, missingEmail, qs, url, postFn, result;
+            var isEmailValidation, missingEmail, qs, url, params;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -115,166 +119,157 @@ var ZeroSSL = (function () {
                         missingEmail = isEmailValidation && !options.validation_email;
                         if (missingEmail)
                             throw new Error('Missing verification option: validation_email');
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/challenges?").concat(qs);
-                        postFn = superagent.post(url)
-                            .type('form')
-                            .field('validation_method', options.validation_method);
+                        params = new URLSearchParams({ validation_method: options.validation_method });
                         if (isEmailValidation)
-                            postFn = postFn.field('validation_email', options.validation_email);
-                        return [4, this.performRequest(postFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                            params.set('validation_email', options.validation_email);
+                        return [4, this.performRequest(url, {
+                                method: "POST",
+                                body: params.toString()
+                            })];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
     };
     ZeroSSL.prototype.downloadCertificate = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, getFn, result;
+            var qs, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/download/return?").concat(qs);
-                        getFn = superagent.get(url);
-                        return [4, this.performRequest(getFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                        return [4, this.performRequest(url, {})];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
     };
     ZeroSSL.prototype.getCertificate = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, getFn, result;
+            var qs, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "?").concat(qs);
-                        getFn = superagent.get(url);
-                        return [4, this.performRequest(getFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                        return [4, this.performRequest(url, {})];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
     };
     ZeroSSL.prototype.listCertificates = function (options) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, qs, url, getFn, result;
+            var query, qs, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         query = { access_key: this.options.accessKey };
                         if (options) {
                             if (options.page)
-                                query['page'] = options.page;
+                                query['page'] = options.page.toString();
                             if (options.limit)
-                                query['limit'] = options.limit;
+                                query['limit'] = options.limit.toString();
                             if (options.search)
                                 query['search'] = options.search;
                             if (options.certificate_status)
                                 query['certificate_status'] = options.certificate_status;
                         }
-                        qs = this.queryString(query);
+                        qs = new URLSearchParams(query).toString();
                         url = "".concat(this.options.apiUrl, "/certificates?").concat(qs);
-                        getFn = superagent.get(url);
-                        return [4, this.performRequest(getFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                        return [4, this.performRequest(url, {})];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
     };
     ZeroSSL.prototype.verificationStatus = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, getFn, result;
+            var qs, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/status?").concat(qs);
-                        getFn = superagent.get(url);
-                        return [4, this.performRequest(getFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                        return [4, this.performRequest(url, {})];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });
     };
     ZeroSSL.prototype.resendVerification = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, postFn, result;
+            var qs, url, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/challenges/email?").concat(qs);
-                        postFn = superagent.post(url);
-                        return [4, this.performRequest(postFn)];
+                        return [4, this.performRequest(url, {
+                                method: "POST"
+                            })];
                     case 1:
                         result = _a.sent();
-                        return [2, result.body.success === 1];
+                        return [2, result.success === 1];
                 }
             });
         });
     };
     ZeroSSL.prototype.cancelCertificate = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, postFn, result;
+            var qs, url, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/cancel?").concat(qs);
-                        postFn = superagent.post(url);
-                        return [4, this.performRequest(postFn)];
+                        return [4, this.performRequest(url, {
+                                method: "POST"
+                            })];
                     case 1:
                         result = _a.sent();
-                        return [2, result.body.success === 1];
+                        return [2, result.success === 1];
                 }
             });
         });
     };
     ZeroSSL.prototype.revokeCertificate = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, postFn, result;
+            var qs, url, result;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/certificates/").concat(id, "/revoke?").concat(qs);
-                        postFn = superagent.post(url);
-                        return [4, this.performRequest(postFn)];
+                        return [4, this.performRequest(url, {
+                                method: "POST"
+                            })];
                     case 1:
                         result = _a.sent();
-                        return [2, result.body.success === 1];
+                        return [2, result.success === 1];
                 }
             });
         });
     };
     ZeroSSL.prototype.validateCSR = function (csr) {
         return __awaiter(this, void 0, void 0, function () {
-            var qs, url, postFn, result;
+            var qs, url;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        qs = this.queryString({ access_key: this.options.accessKey });
+                        qs = new URLSearchParams({ access_key: this.options.accessKey }).toString();
                         url = "".concat(this.options.apiUrl, "/validation/csr?").concat(qs);
-                        postFn = superagent.post(url)
-                            .set('Content-Type', 'application/json')
-                            .send({ csr: csr });
-                        return [4, this.performRequest(postFn)];
-                    case 1:
-                        result = _a.sent();
-                        return [2, result.body];
+                        return [4, this.performRequest(url, {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify({ csr: csr })
+                            })];
+                    case 1: return [2, _a.sent()];
                 }
             });
         });

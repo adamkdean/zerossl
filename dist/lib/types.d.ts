@@ -35,6 +35,9 @@ export type CertificateRecord = {
         };
     };
 };
+export interface StatusResponse {
+    success: 1 | 0;
+}
 export type CertificateSigningRequestOptions = {
     country: string;
     state: string;
