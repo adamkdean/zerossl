@@ -55,7 +55,7 @@ var node_forge_1 = __importDefault(require("node-forge"));
 var errors_1 = require("./errors");
 var superagent_1 = __importDefault(require("superagent"));
 var defaultOptions = {
-    apiUrl: 'api.zerossl.com'
+    apiUrl: 'https://api.zerossl.com'
 };
 var ZeroSSL = (function () {
     function ZeroSSL(options) {

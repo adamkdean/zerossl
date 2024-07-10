@@ -21,7 +21,7 @@ import { ZeroSSLError, findZeroSSLError } from './errors'
 import superagent, { SuperAgentRequest } from 'superagent'
 
 const defaultOptions = {
-  apiUrl: 'api.zerossl.com'
+  apiUrl: 'https://api.zerossl.com'
 }
 
 export class ZeroSSL {
