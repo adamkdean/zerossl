@@ -1,6 +1,6 @@
 {
   "name": "zerossl",
-  "version": "2.1.0-beta0",
+  "version": "2.2.0",
   "description": "ZeroSSL REST API wrapper",
   "keywords": [
     "ZeroSSL",
