@@ -18,7 +18,7 @@ describe('Verify Domains', function () {
   // Initialize ZeroSSL
   const accessKey = process.env.ZEROSSL_ACCESS_KEY || ''
   const zerossl = new ZeroSSL({ accessKey })
-  expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
+  expect(zerossl.options.apiUrl).to.equal('https://api.zerossl.com')
   expect(zerossl.options.accessKey).to.equal(accessKey)
 
   it('should verify a domain', async () => {

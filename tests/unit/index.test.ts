@@ -15,7 +15,7 @@ describe('ZeroSSL', () => {
     it('should set default apiUrl option', () => {
       const options = { accessKey: 'testing' }
       const zerossl = new ZeroSSL(options)
-      expect(zerossl.options.apiUrl).to.equal('api.zerossl.com')
+      expect(zerossl.options.apiUrl).to.equal('https://api.zerossl.com')
     })
 
     it('should set apiUrl option', () => {
