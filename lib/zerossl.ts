@@ -15,10 +15,10 @@ import {
   ListCertificateOptions,
   VerificationStatus,
   VerifyDomainOptions,
-  ZeroSSLOptions
+  ZeroSSLOptions,
+  StatusResponse
 } from './types'
 import { ZeroSSLError, findZeroSSLError } from './errors'
-import superagent, { SuperAgentRequest } from 'superagent'
 
 const defaultOptions = {
   apiUrl: 'https://api.zerossl.com'
@@ -31,35 +31,35 @@ export class ZeroSSL {
     this.options = { ...defaultOptions, ...options }
   }
 
-  private queryString(params: { [key: string]: string | number }): string {
-    return Object.keys(params).map(key => `${key}=${params[key]}`).join('&')
-  }
-
-  private async performRequest(request: SuperAgentRequest): Promise<superagent.Response> {
-    const response = await request
-    if (response.status !== 200 || response.body.success === false) {
-      const error = findZeroSSLError(response.body.error?.code || 0)
-      if (response.body.error?.details) error.details = response.body.error.details
+  private async performRequest<T>(url: string, request: RequestInit): Promise<T> {
+    if (request.method === "POST") {
+      request.headers ??= { "content-type": "application/x-www-form-urlencoded"}
+    }
+    const response = await fetch("https://" + url, request);
+    const body = await response.json();
+    if (!response.ok || body.success === false) {
+      const error = findZeroSSLError(body.error?.code || 0)
+      if (body.error?.details) error.details = body.error.details
 
       throw new ZeroSSLError(response.status, error)
     }
-    return response
+    return body
   }
 
   // Create Certificate
   public async createCertificate(options: CreateCertificateOptions): Promise<CertificateRecord> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates?${qs}`
 
-    const postFn = superagent.post(url)
-      .type('form')
-      .field('certificate_domains', options.domains.join(','))
-      .field('certificate_csr', options.csr)
-      .field('certificate_validity_days', options.validityDays)
-      .field('strict_domains', options.strictDomains)
-
-    const result = await this.performRequest(postFn)
-    return result.body as CertificateRecord
+    return await this.performRequest<CertificateRecord>(url, {
+      method: "POST",
+      body: new URLSearchParams({
+        certificate_domains: options.domains.join(','),
+        certificate_csr: options.csr,
+        certificate_validity_days: options.validityDays.toString(10),
+        strict_domains: options.strictDomains.toString()
+      }).toString()
+    })
   }
 
   // Verify Domains
@@ -67,109 +67,101 @@ export class ZeroSSL {
     const isEmailValidation = options.validation_method === 'EMAIL'
     const missingEmail = isEmailValidation && !options.validation_email
     if (missingEmail) throw new Error('Missing verification option: validation_email')
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
 
-    const qs = this.queryString({ access_key: this.options.accessKey })
     const url = `${this.options.apiUrl}/certificates/${id}/challenges?${qs}`
 
-    let postFn = superagent.post(url)
-      .type('form')
-      .field('validation_method', options.validation_method)
+    const params = new URLSearchParams({validation_method: options.validation_method})
 
-    if (isEmailValidation) postFn = postFn.field('validation_email', options.validation_email as string)
+    if (isEmailValidation) params.set('validation_email', options.validation_email as string)
 
-    const result = await this.performRequest(postFn)
-    return result.body as CertificateRecord
+    return await this.performRequest<CertificateRecord>(url, {
+      method: "POST",
+      body: params.toString()
+    })
   }
 
   // Download Certificate (inline)
   public async downloadCertificate(id: string): Promise<Certificate> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates/${id}/download/return?${qs}`
-    const getFn = superagent.get(url)
-    const result = await this.performRequest(getFn)
-
-    return result.body as Certificate
+    return await this.performRequest<Certificate>(url, {})
   }
 
   // Get Certificate
   public async getCertificate(id: string): Promise<CertificateRecord> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates/${id}?${qs}`
-    const getFn = superagent.get(url)
-    const result = await this.performRequest(getFn)
-
-    return result.body as CertificateRecord
+    return await this.performRequest<CertificateRecord>(url, {})
   }
 
   // List Certificates
   public async listCertificates(options?: ListCertificateOptions): Promise<CertificateList> {
-    const query: Record<string, string | number> = { access_key: this.options.accessKey }
+    const query: Record<string, string> = { access_key: this.options.accessKey }
     if (options) {
-      if (options.page) query['page'] = options.page
-      if (options.limit) query['limit'] = options.limit
+      if (options.page) query['page'] = options.page.toString()
+      if (options.limit) query['limit'] = options.limit.toString()
       if (options.search) query['search'] = options.search
       if (options.certificate_status) query['certificate_status'] = options.certificate_status
     }
 
-    const qs = this.queryString(query)
+    const qs = new URLSearchParams(query).toString()
     const url = `${this.options.apiUrl}/certificates?${qs}`
-    const getFn = superagent.get(url)
-    const result = await this.performRequest(getFn)
-
-    return result.body as CertificateList
+    return await this.performRequest<CertificateList>(url, {})
   }
 
   // Verification Status
   public async verificationStatus(id: string): Promise<VerificationStatus> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates/${id}/status?${qs}`
-    const getFn = superagent.get(url)
-    const result = await this.performRequest(getFn)
-
-    return result.body as VerificationStatus
+    return await this.performRequest<VerificationStatus>(url, {})
   }
 
   // Resend Verification
   public async resendVerification(id: string): Promise<boolean> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates/${id}/challenges/email?${qs}`
-    const postFn = superagent.post(url)
-    const result = await this.performRequest(postFn)
+    const result = await this.performRequest<StatusResponse>(url, {
+      method: "POST",      
+    })
 
-    return result.body.success === 1
+    return result.success === 1
   }
 
   // Cancel Certificate
   public async cancelCertificate(id: string): Promise<boolean> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates/${id}/cancel?${qs}`
-    const postFn = superagent.post(url)
-    const result = await this.performRequest(postFn)
+    const result = await this.performRequest<StatusResponse>(url, {
+      method: "POST"
+    })
 
-    return result.body.success === 1
+    return result.success === 1
   }
 
   // Revoke Certificate
   public async revokeCertificate(id: string): Promise<boolean> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/certificates/${id}/revoke?${qs}`
-    const postFn = superagent.post(url)
-    const result = await this.performRequest(postFn)
+    const result = await this.performRequest<StatusResponse>(url, {
+      method: "POST"
+    })
 
-    return result.body.success === 1
+    return result.success === 1
   }
 
   // Validate Certificate Signing Request
   public async validateCSR(csr: string): Promise<CertificateSigningRequestValidationResult> {
-    const qs = this.queryString({ access_key: this.options.accessKey })
+    const qs = new URLSearchParams({ access_key: this.options.accessKey }).toString()
     const url = `${this.options.apiUrl}/validation/csr?${qs}`
 
-    const postFn = superagent.post(url)
-      .set('Content-Type', 'application/json')
-      .send({ csr })
-
-    const result = await this.performRequest(postFn)
-    return result.body as CertificateSigningRequestValidationResult
+    return await this.performRequest<CertificateSigningRequestValidationResult>(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({csr})
+    })
   }
 
   // Generate Key Pair

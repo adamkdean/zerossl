@@ -2,7 +2,6 @@ import { Certificate, CertificateList, CertificateRecord, CertificateSigningRequ
 export declare class ZeroSSL {
     options: ZeroSSLOptions;
     constructor(options: ZeroSSLOptions);
-    private queryString;
     private performRequest;
     createCertificate(options: CreateCertificateOptions): Promise<CertificateRecord>;
     verifyDomains(id: string, options: VerifyDomainOptions): Promise<CertificateRecord>;
