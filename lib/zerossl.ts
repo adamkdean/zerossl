@@ -57,6 +57,8 @@ export class ZeroSSL {
       .field('certificate_csr', options.csr)
       .field('certificate_validity_days', options.validityDays)
       .field('strict_domains', options.strictDomains)
+    
+    if (options.replacementForCertificate) postFn.field('replacement_for_certificate', options.replacementForCertificate as string)
 
     const result = await this.performRequest(postFn)
     return result.body as CertificateRecord

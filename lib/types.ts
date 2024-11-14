@@ -63,6 +63,7 @@ export type CreateCertificateOptions = {
   domains: string[]
   validityDays: 90 | 365
   strictDomains: boolean
+  replacementForCertificate?: string
 }
 
 export type KeyPair = {

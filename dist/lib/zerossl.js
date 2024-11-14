@@ -98,6 +98,8 @@ var ZeroSSL = (function () {
                             .field('certificate_csr', options.csr)
                             .field('certificate_validity_days', options.validityDays)
                             .field('strict_domains', options.strictDomains);
+                        if (options.replacementForCertificate)
+                            postFn.field('replacement_for_certificate', options.replacementForCertificate);
                         return [4, this.performRequest(postFn)];
                     case 1:
                         result = _a.sent();
