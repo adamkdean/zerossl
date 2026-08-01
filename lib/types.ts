@@ -70,11 +70,13 @@ export type KeyPair = {
   privateKey: string
 }
 
+export type CertificateStatus = 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire'
+
 export type ListCertificateOptions = {
   page?: number
   limit?: number
   search?: string
-  certificate_status?: 'draft' | 'pending_validation' | 'issued' | 'cancelled' | 'expiring_soon' | 'expire'
+  certificate_status?: CertificateStatus | CertificateStatus[]
 }
 
 export type VerificationStatus = {

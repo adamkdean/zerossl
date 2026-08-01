@@ -108,7 +108,11 @@ export class ZeroSSL {
       if (options.page) query['page'] = options.page
       if (options.limit) query['limit'] = options.limit
       if (options.search) query['search'] = options.search
-      if (options.certificate_status) query['certificate_status'] = options.certificate_status
+      if (options.certificate_status) {
+        query['certificate_status'] = Array.isArray(options.certificate_status)
+          ? options.certificate_status.join(',')
+          : options.certificate_status
+      }
     }
 
     const qs = this.queryString(query)
